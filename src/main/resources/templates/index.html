@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>A webpage to evidence familiarity with Spring Boot.</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<!-- Navigation as top bar (horizontal). -->
+<nav class="w3-top">
+    <div class="w3-bar w3-theme-d2 w3-left-align">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-hover-white w3-theme-d2" href="javascript:void(0);" onclick="openNavigationColumn()">
+            <i class="fa fa-bars"></i>
+        </a>
+        <a href="#" class="w3-bar-item w3-button w3-teal">
+            <i class="fa fa-home w3-margin-right"></i>
+            Top
+        </a>
+        <a href="#aboutMe" class="w3-bar-item w3-button w3-hide-small w3-hover-white">About Me</a>
+        <a href="#work" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Work</a>
+        <a href="#comments" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Comments</a>
+
+    </div>
+</nav>
+
+<!-- Navigation as left column. -->
+<nav class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium" id="navigationColumn">
+    <a href="#" class="w3-bar-item w3-button w3-teal">
+        <i class="fa fa-home w3-margin-right"></i>
+        Top
+    </a>
+    <a href="#aboutMe" class="w3-bar-item w3-button">About Me</a>
+    <a href="#work" class="w3-bar-item w3-button">Work</a>
+    <a href="#comments" class="w3-bar-item w3-button">Comments</a>
+
+</nav>
+
+<!-- Main content. -->
+<div class="w3-main">
+
+    <div class="w3-teal">
+        <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776</button>
+        <div class="w3-container">
+            <h1>Hello, World!</h1>
+            <h3>I'm Anna, it's nice to meet you!</h3>
+        </div>
+    </div>
+
+    <div class="w3-container" id="aboutMe">
+        <p>Lonely developer seeks company, teammates to work with, learn from and help. </p>
+    </div>
+
+    <div class="w3-container">
+        <div>
+            <p>Pros: </p>
+            <ul>
+                <li>Likes to make people feel welcome and valuable.</li>
+                <li>Listens, reads, writes, maths, computers well.</li>
+                <li>Hilariously honest.</li>
+                <li>Eccentric</li>
+            </ul>
+        </div>
+        <div>
+            <p>Cons: </p>
+            <ul>
+                <li>Seethes when people make others feel unwelcome or invaluable. </li>
+                <li>If asked to write a user guide for developers, will write a useful, funny user guide for developers. This can cause delay in completion time if expected to deliver dry, unhelpful user guide for leadership. </li>
+                <li>Subject to bouts of overwhelming awkwardness when forced to perform in front of an audience (or during interviews). </li>
+                <li>Eccentric</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="w3-container" id="work">
+        <p><a href="https://github.com/ilovetheinternet/SpringBootExampleWork">Here's the source code for this page.</a> It was written using Spring Boot, in Java, HTML, CSS and Javascript, and deployed using AWS.</p>
+        <!--        <p>Here's the same page, written using Django and in Python instead of Spring Boot and in Java.</p>-->
+        <!--        <p>Here's the same page again, written using React and in node.js (jsx?) instead of Spring Boot/Java or Django/Python.</p>-->
+
+    </div>
+
+
+    <div class="w3-container" id="comments">
+        <h3>Comments</h3>
+        <form action="#" th:action="@{/}" modelAttribute="comment" th:object="${comment}" method="post">
+            <input field="*{id}" labeltype="text"  name="id" value="id" >
+            <input field="*{content}" labeltype="text" name="content">
+            <input type="submit" value="Share" /> <input type="reset" value="Reset">
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // function w3_open() {
+    //     var x = document.getElementById("navigationColumn");
+    //     x.style.width = "300px";
+    //     x.style.paddingTop = "10%";
+    //     x.style.display = "block";
+    // }
+    //
+    //
+    //
+    // function w3_close() {
+    //     document.getElementById("navigationColumn").style.display = "none";
+    // }
+
+    function openNavigationColumn() {
+        var x = document.getElementById("navigationColumn");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+</script>
+
+</body>
+</html>
