@@ -112,6 +112,93 @@ Copy public IP. paste it in a browser window, + ':8080/index', or + ':8080/whate
 ---
 
 
+
+---
+
+[comment]: <> (Get your web application/site to show up as an internet site by deploying the application in your docker image to an aws-determined domain by making a new elastic container service using fargate.)
+
+https://console.aws.amazon.com/ecs/home?region=us-east-1#/firstRun
+
+Find the one that says `custom`, click it and click `configure`.
+
+paste docker image uri where appropriate
+
+We're gonna use the memory and cpu values in aws's tomcat-webserver container definition, on the basis that our application seems more similar to that one than to the other sample container definitions.
+
+Change hard size limit to 2048,
+
+port 8080
+
+advanced settings, cpu, 1024.
+
+Update.
+
+task memory to 2gb, cpu to 1vcpu.
+
+Save. 
+
+Next, next, next until you can click on the `create` button. do that.
+
+View service.
+
+Tasks.
+
+Click task.
+
+Wait till status is no longer pending (status indicator might be hard to find, but it's there. Also, you might need to refresh the page.).
+
+
+Copy public IP. paste it in a browser window, + ':8080/index', or + ':8080/whateverendpointyouvedefined'. Or maybe just + ':8080', if you have an index.html and that's how that works.
+
+
+---
+
+
+
+
+alternate setting up ecs
+
+ecs -> create cluster -> select tempalte containing word 'FARGATE'.
+
+Check yes for VPC and cloudmetrics things
+
+ECS -> Task Definitions -> Create new task definition -> Fargate
+
+task role: none
+
+task execution role: whatever it defaults to
+
+task memory: 2gb
+
+task cpu: 1vCPU
+
+add container definition ->
+
+paste docker image uri where appropriate
+
+We're gonna use the memory and cpu values in aws's tomcat-webserver container definition, on the basis that our application seems more similar to that one than to the other sample container definitions.
+
+Change hard size limit to 2048,
+
+port 8080
+
+Open up advanced options, one of those sections mentions cpu, set appropriate looking one to 1024, open up advanced container configuration, change cpu units to 1024. (currently under environment, but that could change). Click `update` button.
+
+create task
+
+go back to cluster, select yours, go to tasks, add task, create.
+
+
+---
+
+
 End Credits:
 
 https://medium.com/swlh/build-deploy-a-rest-api-from-scratch-using-spring-boot-and-aws-ecs-eb369137a020
+
+
+
+---
+work in progress
+
+https://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
