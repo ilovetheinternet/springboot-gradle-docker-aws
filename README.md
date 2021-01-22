@@ -205,3 +205,21 @@ https://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
 assdf
 
 changed IAM role that seemed related to codebuild so it has some words related to ECR
+
+https://aws.amazon.com/blogs/compute/authenticating-amazon-ecr-repositories-for-docker-cli-with-credential-helper/
+
+
+---
+
+v9u5b3u6.dkr.ecr.us-east-1.amazonaws.com/springboot-gradle-docker-aws
+
+// https://us-east-1.console.aws.amazon.com/ecr/repositories?region=us-east-1
+
+public.ecr.aws/v9u5b3u6/springboot-gradle-docker-aws
+
+public.ecr.aws/v9u5b3u6/springboot-gradle-docker-aws:latest
+
+us-east-1.amazonaws.com/v9u5b3u6/springboot-gradle-docker-aws
+
+
+v9u5b3u6.dkr.ecr.us-east-1.amazonaws.com/springboot-gradle-docker-aws
