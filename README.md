@@ -203,3 +203,5 @@ work in progress
 
 https://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
 assdf
+
+changed IAM role that seemed related to codebuild so it has some words related to ECR
