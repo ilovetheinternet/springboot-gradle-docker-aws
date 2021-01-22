@@ -223,3 +223,181 @@ us-east-1.amazonaws.com/v9u5b3u6/springboot-gradle-docker-aws
 
 
 v9u5b3u6.dkr.ecr.us-east-1.amazonaws.com/springboot-gradle-docker-aws
+
+
+---
+
+
+https://docs.aws.amazon.com/codepipeline/latest/userguide/tutorials-ecs-ecr-codedeploy.html#tutorials-ecs-ecr-codedeploy-loadbal
+
+$ aws ecr create-repository --repository-name springboot-gradle-docker-aws
+
+output
+    
+        {
+        "repository": {
+            "repositoryArn": "arn:aws:ecr:us-east-2:463796021282:repository/springboot-gradle-docker-aws",
+            "registryId": "463796021282",
+            "repositoryName": "springboot-gradle-docker-aws",
+            "repositoryUri": "463796021282.dkr.ecr.us-east-2.amazonaws.com/springboot-gradle-docker-aws",
+            "createdAt": "2021-01-22T16:27:23-06:00",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+                "scanOnPush": false
+            },
+            "encryptionConfiguration": {
+                "encryptionType": "AES256"
+            }
+        }
+    }
+
+
+$ ./gradlew build
+
+$ docker tag springboot-gradle-docker-aws:latest 463796021282.dkr.ecr.us-east-2.amazonaws.com/springboot-gradle-docker-aws:latest
+
+$ aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 463796021282.dkr.ecr.us-east-2.amazonaws.com/springboot-gradle-docker-aws
+
+$ docker push 463796021282.dkr.ecr.us-east-2.amazonaws.com/springboot-gradle-docker-aws:latest
+
+taskdef.json
+
+    {
+        "executionRoleArn": "arn:aws:iam::463796021282:role/ecsTaskExecutionRole",
+        "containerDefinitions": [
+            {
+                "name": "springboot-gradle-docker-aws",
+                "image": "springboot-gradle-docker-aws",
+                "essential": true,
+                "portMappings": [
+                    {
+                        "hostPort": 80,
+                        "protocol": "tcp",
+                        "containerPort": 80
+                    }
+                ]
+            }
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "networkMode": "awsvpc",
+        "cpu": "1024",
+        "memory": "2048",
+        "family": "ecs-demo"
+    }    
+
+$ aws ecs register-task-definition --cli-input-json file://taskdef.json
+
+output 
+
+    {
+        "taskDefinition": {
+            "taskDefinitionArn": "arn:aws:ecs:us-east-2:463796021282:task-definition/ecs-demo:4",
+            "containerDefinitions": [
+                {
+                    "name": "springboot-gradle-docker-aws",
+                    "image": "springboot-gradle-docker-aws",
+                    "cpu": 0,
+                    "portMappings": [
+                        {
+                            "containerPort": 80,
+                            "hostPort": 80,
+                            "protocol": "tcp"
+                        }
+                    ],
+                    "essential": true,
+                    "environment": [],
+                    "mountPoints": [],
+                    "volumesFrom": []
+                }
+            ],
+            "family": "ecs-demo",
+            "executionRoleArn": "arn:aws:iam::463796021282:role/ecsTaskExecutionRole",
+            "networkMode": "awsvpc",
+            "revision": 4,
+            "volumes": [],
+            "status": "ACTIVE",
+            "requiresAttributes": [
+                {
+                    "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+                },
+                {
+                    "name": "ecs.capability.task-eni"
+                }
+            ],
+            "placementConstraints": [],
+            "compatibilities": [
+                "EC2",
+                "FARGATE"
+            ],
+            "requiresCompatibilities": [
+                "FARGATE"
+            ],
+            "cpu": "1024",
+            "memory": "2048"
+        }
+    }
+
+check https://console.aws.amazon.com/iam/home?region=us-east-1#/roles/ecsTaskExecutionRole and make sure it contains AmazonECSTaskExecutionRolePolicy  (not sure how to check other than visually. or by making a parser.)
+
+Make an appspec.yml file in your project root directory and fill it with (Leave `TaskDefinition: <TASK_DEFINITION>` alone, your pipeline will deal with it, allegedly.):  
+
+    version: 0.0
+    Resources:
+    - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+      TaskDefinition: <TASK_DEFINITION>
+      LoadBalancerInfo:
+      ContainerName: "springboot-gradle-docker-aws"
+      ContainerPort: 80
+
+[comment]: <> (&#40;the template apparently uses &#41;)
+
+[comment]: <> (    version: 0.0)
+
+[comment]: <> (    Resources:)
+
+[comment]: <> (    - TargetService:)
+
+[comment]: <> (      Type: AWS::ECS::Service)
+
+[comment]: <> (      Properties:)
+
+[comment]: <> (      TaskDefinition: "task-definition-ARN")
+
+[comment]: <> (      LoadBalancerInfo:)
+
+[comment]: <> (      ContainerName: "container-name")
+
+[comment]: <> (      ContainerPort: container-port-number)
+
+[comment]: <> (    # Optional properties)
+
+[comment]: <> (            PlatformVersion: "LATEST")
+
+[comment]: <> (            NetworkConfiguration:)
+
+[comment]: <> (                AwsvpcConfiguration:)
+
+[comment]: <> (                  Subnets: ["subnet-name-1", "subnet-name-2"])
+
+[comment]: <> (                  SecurityGroups: ["security-group"])
+
+[comment]: <> (                  AssignPublicIp: "ENABLED")
+
+[comment]: <> (    Hooks:)
+
+[comment]: <> (    - BeforeInstall: "BeforeInstallHookFunctionName")
+
+[comment]: <> (    - AfterInstall: "AfterInstallHookFunctionName")
+
+[comment]: <> (    - AfterAllowTestTraffic: "AfterAllowTestTrafficHookFunctionName")
+
+[comment]: <> (    - BeforeAllowTraffic: "BeforeAllowTrafficHookFunctionName")
+
+[comment]: <> (    - AfterAllowTraffic: "AfterAllowTrafficHookFunctionName")
+
+
+
