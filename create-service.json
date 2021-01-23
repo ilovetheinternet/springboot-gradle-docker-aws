@@ -1,0 +1,29 @@
+{
+  "taskDefinition": "springboot-gradle-docker-aws:1",
+  "cluster": "springboot-gradle-docker-aws",
+  "loadBalancers": [
+    {
+      "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-2:463796021282:targetgroup/target-group-1/4ce35ba525149c70",
+      "containerName": "springboot-gradle-docker-aws",
+      "containerPort": 80
+    }
+  ],
+  "desiredCount": 1,
+  "launchType": "FARGATE",
+  "schedulingStrategy": "REPLICA",
+  "deploymentController": {
+    "type": "CODE_DEPLOY"
+  },
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "subnets": [
+        "subnet-081f0772",
+        "subnet-c3bbfb8f"
+      ],
+      "securityGroups": [
+        "sg-34201e44"
+      ],
+      "assignPublicIp": "ENABLED"
+    }
+  }
+}

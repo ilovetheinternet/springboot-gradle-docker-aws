@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "springboot-gradle-docker-aws",
-      "image": "<IMAGE1_NAME>",
+      "image": "463796021282.dkr.ecr.us-east-2.amazonaws.com/springboot-gradle-docker-aws:latest",
       "essential": true,
       "portMappings": [
         {

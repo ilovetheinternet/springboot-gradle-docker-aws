@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: <TASK_DEFINITION>
+        TaskDefinition: arn:aws:ecs:us-east-2:463796021282:task-definition/springboot-gradle-docker-aws:2
         LoadBalancerInfo:
           ContainerName: "springboot-gradle-docker-aws"
           ContainerPort: 80
