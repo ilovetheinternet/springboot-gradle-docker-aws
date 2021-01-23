@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "springboot-gradle-docker-aws",
-      "image": "springboot-gradle-docker-aws",
+      "image": "<IMAGE1_NAME>",
       "essential": true,
       "portMappings": [
         {
@@ -20,5 +20,5 @@
   "networkMode": "awsvpc",
   "cpu": "1024",
   "memory": "2048",
-  "family": "ecs-demo"
+  "family": "springboot-gradle-docker-aws"
 }
